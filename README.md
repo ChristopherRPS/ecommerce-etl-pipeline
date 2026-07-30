@@ -9,18 +9,24 @@ Pipeline de ingeniería de datos end-to-end que extrae, transforma y carga datos
 Construir un pipeline ETL productivo que procese datos transaccionales de e-commerce (pedidos, clientes, productos, pagos) y los modele en un esquema estrella listo para análisis de negocio (ventas por región, tiempos de entrega, categorías más vendidas, etc.).
 
 ## 🏗️ Arquitectura
-┌─────────────┐ ┌──────────────┐ ┌─────────────┐
-│ Extract │ ───► │ Transform │ ───► │ Load │
-│ (CSV raw) │ │ (Pandas) │ │ (PostgreSQL)│
-└─────────────┘ └──────────────┘ └─────────────┘
-▲
-Orquestado por
-Apache Airflow
+
+```mermaid
+flowchart LR
+    A[Extract<br/>CSV raw] --> B[Transform<br/>Pandas]
+    B --> C[Load<br/>PostgreSQL]
+    D[Apache Airflow] -.orquesta.-> A
+    D -.orquesta.-> B
+    D -.orquesta.-> C
+```
 
 **Modelo de datos (esquema estrella):**
-dim_customers ──┐
-├──► fact_order_items ◄── dim_products
-dim_orders ──────┘
+
+```mermaid
+erDiagram
+    dim_customers ||--o{ fact_order_items : tiene
+    dim_products ||--o{ fact_order_items : incluye
+    dim_orders ||--o{ fact_order_items : contiene
+```
 
 ## 🛠️ Stack técnico
 
@@ -33,18 +39,23 @@ dim_orders ──────┘
 
 [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) — ~100K pedidos reales de e-commerce en Brasil (2016-2018).
 
+Aquí está, envuelta correctamente en un bloque de código para que GitHub respete la indentación y los saltos de línea:
+
 ## 📁 Estructura del proyecto
+
+```
 ecommerce-etl-pipeline/
 ├── data/
-│ ├── raw/ # CSVs originales (descargar de Kaggle, no incluidos en el repo)
-│ └── processed/ # Datos limpios generados por el pipeline
+│   ├── raw/           # CSVs originales (descargar de Kaggle, no incluidos en el repo)
+│   └── processed/     # Datos limpios generados por el pipeline
 ├── src/
-│ ├── transform.py # Limpieza y modelado de datos
-│ └── load.py # Carga a PostgreSQL
+│   ├── transform.py   # Limpieza y modelado de datos
+│   └── load.py        # Carga a PostgreSQL
 ├── dags/
-│ └── etl_dag.py # DAG de Airflow
+│   └── etl_dag.py     # DAG de Airflow
 ├── docker-compose.yml
 └── README.md
+```
 
 ## 🚀 Cómo correrlo
 
@@ -87,6 +98,9 @@ GROUP BY customer_state
 ORDER BY total_pedidos DESC
 LIMIT 5;
 ```
+## Captura de pantalla del grafo de Airflow
+<img width="423" height="287" alt="image" src="https://github.com/user-attachments/assets/e3c8f4fd-e7c9-47cb-8441-a4ba1759d999" />
+
 
 ## 🔮 Posibles mejoras futuras
 
