@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: raw_dw
+    schema: public
+    tables:
+      - name: dim_customers
+      - name: dim_orders
+      - name: dim_products
+      - name: fact_order_items

@@ -104,6 +104,35 @@ LIMIT 5;
 
 ## 🔮 Posibles mejoras futuras
 
-- Agregar tests de calidad de datos (Great Expectations)
-- Dashboard de visualización (Metabase / Streamlit)
+- Agregar tests de calidad de datos (Great Expectations) - Implementada
+- Dashboard de visualización (Metabase / Streamlit) - Implementada
 - Migrar a un data warehouse cloud (BigQuery / Snowflake)
+
+
+
+## 📊 Capa de transformación (dbt) y visualización (Metabase)
+
+Este proyecto extiende el pipeline original con una capa de transformación usando **dbt** y un dashboard interactivo con **Metabase**.
+
+### dbt
+- **Staging models**: `stg_customers`, `stg_orders`, `stg_products`, `stg_order_items` — limpieza y tipado de las tablas fuente.
+- **Mart**: `fct_sales` — tabla analítica que une las 4 fuentes en un modelo listo para consumo.
+- **Tests de calidad de datos**: validaciones `not_null` sobre columnas clave (`order_id`, `product_id`, `price`).
+- **Documentación**: generada automáticamente con `dbt docs`, incluyendo el grafo de linaje de los modelos.
+
+### Dashboard (Metabase)
+Dashboard con 3 métricas clave del negocio:
+- Ventas totales por estado
+- Ventas totales por categoría de producto
+- Tiempo promedio de entrega (días)
+
+![Dashboard](assets/dashboard.png)
+
+### Cómo correrlo
+\`\`\`bash
+docker-compose up -d
+cd olist_dbt
+dbt run
+dbt test
+\`\`\`
+Luego entra a Metabase en `http://localhost:3000` y conecta la base `ecommerce_dw`.

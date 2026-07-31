@@ -11,6 +11,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  metabase:
+    image: metabase/metabase:latest
+    container_name: ecommerce_metabase
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
   airflow:
     image: apache/airflow:2.10.4
     container_name: ecommerce_airflow
@@ -28,7 +35,6 @@ services:
       - ./logs:/opt/airflow/logs
     ports:
       - "8080:8080"
-    command: airflow standalone
-
+    command: airflow standalone    
 volumes:
-  postgres_data:
+      postgres_data:
