@@ -126,7 +126,7 @@ Dashboard con 3 métricas clave del negocio:
 - Ventas totales por categoría de producto
 - Tiempo promedio de entrega (días)
 
-![Dashboard](assets/dashboard.png)
+![Dashboard](assets/dashboard.jpeg)
 
 ### Cómo correrlo
 \`\`\`bash
