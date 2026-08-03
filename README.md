@@ -119,6 +119,7 @@ Este proyecto extiende el pipeline original con una capa de transformación usan
 - **Mart**: `fct_sales` — tabla analítica que une las 4 fuentes en un modelo listo para consumo.
 - **Tests de calidad de datos**: validaciones `not_null` sobre columnas clave (`order_id`, `product_id`, `price`).
 - **Documentación**: generada automáticamente con `dbt docs`, incluyendo el grafo de linaje de los modelos.
+> **Orquestación:** dbt está integrado directamente en el DAG de Airflow. Cada corrida del pipeline ejecuta automáticamente `dbt run` y `dbt test` después de cargar los datos, incluyendo un paso previo (`drop_dbt_views`) que limpia las vistas dependientes antes de recrear las tablas fuente — evitando conflictos de dependencias en Postgres.
 
 ### Dashboard (Metabase)
 Dashboard con 3 métricas clave del negocio:
@@ -129,10 +130,8 @@ Dashboard con 3 métricas clave del negocio:
 ![Dashboard](assets/dashboard.jpeg)
 
 ### Cómo correrlo
-\`\`\`bash
+```bash
 docker-compose up -d
-cd olist_dbt
-dbt run
-dbt test
-\`\`\`
+```
+Activa el DAG `ecommerce_etl_pipeline` en `http://localhost:8080` — dbt se ejecuta automáticamente como parte del pipeline. 
 Luego entra a Metabase en `http://localhost:3000` y conecta la base `ecommerce_dw`.
