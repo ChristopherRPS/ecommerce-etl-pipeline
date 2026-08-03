@@ -27,12 +27,13 @@ services:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://etl_user:etl_pass@postgres:5432/airflow_meta
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
-      _PIP_ADDITIONAL_REQUIREMENTS: "pandas sqlalchemy psycopg2-binary"
+      _PIP_ADDITIONAL_REQUIREMENTS: "pandas sqlalchemy psycopg2-binary dbt-postgres"
     volumes:
       - ./dags:/opt/airflow/dags
       - ./src:/opt/airflow/src
       - ./data:/opt/airflow/data
       - ./logs:/opt/airflow/logs
+      - ./olist_dbt:/opt/airflow/olist_dbt
     ports:
       - "8080:8080"
     command: airflow standalone    
